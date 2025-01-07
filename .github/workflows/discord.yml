@@ -7,9 +7,10 @@ on:
     branches: ["develop"]
 
 jobs:
-  build_android:
+  deploy:
+    environment: development
     runs-on: ubuntu-latest
-
+  
     steps:
       - name: Discord Commits
         uses: Sniddl/discord-commits@v1.6
