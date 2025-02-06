@@ -2,15 +2,17 @@
 case "$1" in
     "--no-build")
     ;;
-    "--no-clean")
-        /app/scripts/build --no-clean
-    ;;
     *)
-        /app/scripts/build
+        #cargo run --bin prisma -- generate
     ;;
 esac
 
-export DEV_MODE='true';
-export NODE_OPTIONS='--inspect-brk=0.0.0.0:2129';
+rustup default stable
 
-node . "$@"
+#cargo build
+
+#lldb-server g 0.0.0.0:2129 -- /app/target/debug/ifhany
+
+while true; do
+    sleep 5;
+done

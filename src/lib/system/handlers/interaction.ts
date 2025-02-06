@@ -4,6 +4,7 @@
 import {
     AutocompleteInteraction,
     ChatInputCommandInteraction,
+    DMChannel,
     Events,
     Interaction,
 } from "discord.js";
@@ -73,8 +74,15 @@ export class InteractionHandler {
         interaction: Interaction
     ): Promise<Ok<void>> {
         try {
-            if (interaction.isChatInputCommand()) {
-                if (!(await verify.permissions(interaction)).val) {
+            if (
+                interaction instanceof ChatInputCommandInteraction &&
+                !(interaction instanceof DMChannel)
+            ) {
+                if (
+                    !(await verify.permissions(interaction)).val &&
+                    (interaction.user.id !== interaction.guild?.ownerId ||
+                        interaction.commandName !== "config")
+                ) {
                     const message = await messages.embed.warn.missingPermission(
                         interaction
                     );

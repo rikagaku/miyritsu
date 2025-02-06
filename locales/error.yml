@@ -1,0 +1,23 @@
+syntax.limit.end_operators:
+    en: "You are using operators in the end of the `limit` parameter!"
+    pt-BR: "Você está usando operadores no fim do parâmetro `limit`!"
+syntax.limit.unit_syntax_err:
+    en: "Something between the operators is wrong, verify it!"
+    pt-BR: "Algo entre os operadores està errado, verifique!"
+syntax.limit.invalid_unit_match:
+    en: "The unit doesn't match the limit part!"
+    pt-BR: "A unidade não bate com o limite!"
+syntax.emoji.is_not:
+    en: "This is not an emoji!"
+    pt-BR: "Isto não é um emoji!"
+
+command.only_server:
+    en: "This command can only be used in a server!"
+
+log.current.gateway_heartbeat:
+    en: "The current gateway heartbeat is ${heartbeat}ms!"
+    pt-BR: "O gateway heartbeat atual é ${heartbeat}ms!"
+
+
+reply.kick.success:
+    en: "User has been kicked!"

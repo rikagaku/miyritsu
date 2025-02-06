@@ -1,0 +1,23 @@
+[package]
+name = "ifhany"
+version = "2.0.0"
+edition = "2021"
+default-run = "ifhany"
+
+[dependencies]
+serde = "1.0.215"
+serenity = "0.12.4"
+prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.11", default-features = false, features = [
+    "mongodb",
+] }
+prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.11", default-features = false, features = [
+    "mongodb",
+] }
+dotenv = "0.15.0"
+tokio = "1.41.1"
+poise = "0.6.1"
+chrono = "0.4.38"
+strum_macros = "0.26.4"
+regex = "1.11.1"
+rust-i18n = "3.1.2"
+strum = "0.26.3"

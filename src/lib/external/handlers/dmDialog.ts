@@ -11,6 +11,7 @@ import {
     Message,
     MessagePayload,
     Collection,
+    PartialGroupDMChannel,
 } from "discord.js";
 //#endregion
 //#region           Modules
@@ -57,6 +58,15 @@ export class DMDialog {
                     var messageSent = await this.user.send(message);
                 } catch (err) {
                     if (err instanceof DiscordAPIError) {
+                        if (this.context.message.channel instanceof PartialGroupDMChannel) {
+                            throw new BotErr({
+                                message:
+                                    "You can't use it with a channel of GroupDMChannel class!",
+                                origin: ErrorOrigin.User,
+                                kind: ErrorKind.TypeError,
+                            });
+                        }
+
                         const dmWarn = await this.context.message.channel.send({
                             content: `Ei! Você precisa ter a DM aberta.\n\n||${this.user}||`,
                         });
@@ -103,11 +113,11 @@ export class DMDialog {
             // Add reaction
             await messageSent.react(this.cancelEmoji);
         } catch (err) {
-            if (err instanceof BotErr) {
-                if (err.val.message === dmClosedWarn) return new Ok("dmclosed");
-            } else {
-                throw err;
+            if (err instanceof BotErr && err.val.message === dmClosedWarn) {
+                return new Ok("dmclosed");
             }
+
+            throw err;
         }
 
         const cancelOptions: AwaitReactionsOptions = {
@@ -134,12 +144,23 @@ export class DMDialog {
                 return void 0;
             });
 
-            // Listen to response
-            messageSent.channel
-                .awaitMessages(messageOptions)
-                .then(async (response) => {
-                    finish(response);
-                });
+            {
+                if (messageSent.channel instanceof PartialGroupDMChannel) {
+                    throw new BotErr({
+                        message:
+                            "You can't use it with a channel of GroupDMChannel class!",
+                        origin: ErrorOrigin.User,
+                        kind: ErrorKind.TypeError,
+                    });
+                }
+
+                // Listen to response
+                messageSent.channel
+                    .awaitMessages(messageOptions)
+                    .then(async (response) => {
+                        finish(response);
+                    });
+            }
 
             // Finish it if time is over
             if (timeout)

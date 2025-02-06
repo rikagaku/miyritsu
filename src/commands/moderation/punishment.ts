@@ -7,6 +7,7 @@ import {
     Guild,
     PermissionFlagsBits,
     SlashCommandBuilder,
+    SlashCommandSubcommandsOnlyBuilder,
     User,
 } from "discord.js";
 //#endregion
@@ -25,7 +26,9 @@ import { $Enums } from "@prisma/client";
 //#endregion
 //#region               Typing
 export namespace types {
-    export type data = () => Promise<Ok<commandTypes.CommandData>>;
+    export type data = () => Promise<
+        Ok<commandTypes.CommandData<SlashCommandSubcommandsOnlyBuilder>>
+    >;
     export type execute = (
         interaction: ChatInputCommandInteraction
     ) => Promise<Result<void>>;

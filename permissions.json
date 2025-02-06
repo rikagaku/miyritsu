@@ -1,0 +1,83 @@
+{
+    "745049338396409886": {
+        "name": "Servidor da Fhany",
+        "commands": {
+            "autoreport": {
+                "roles": {
+                    "allowed": [
+                        "745055012597792816"
+                    ]
+                }
+            },
+            "autoemote": {
+                "roles": {
+                    "allowed": [
+                        "745055012597792816"
+                    ]
+                }
+            },
+            "movecontent": {
+                "roles": {
+                    "allowed": [
+                        "745055012597792816"
+                    ]
+                }
+            },
+            "chatfilter": {
+                "roles": {
+                    "allowed": [
+                        "745055012597792816"
+                    ]
+                }
+            },
+            "ban": {
+                "roles": {
+                    "allowed": [
+                        "745055012597792816"
+                    ],
+                    "minViewer": "private"
+                }
+            },
+            "case": {
+                "roles": {
+                    "allowed": [
+                        "745055012597792816"
+                    ],
+                    "minViewer": "private"
+                }
+            },
+            "kick": {
+                "roles": {
+                    "allowed": [
+                        "745055012597792816"
+                    ],
+                    "minViewer": "private"
+                }
+            },
+            "mute": {
+                "roles": {
+                    "allowed": [
+                        "745055012597792816"
+                    ],
+                    "minViewer": "private"
+                }
+            },
+            "punishment": {
+                "roles": {
+                    "allowed": [
+                        "745055012597792816"
+                    ],
+                    "minViewer": "private"
+                }
+            },
+            "warn": {
+                "roles": {
+                    "allowed": [
+                        "745055012597792816"
+                    ],
+                    "minViewer": "private"
+                }
+            }
+        }
+    }
+}

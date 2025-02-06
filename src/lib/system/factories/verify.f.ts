@@ -13,9 +13,6 @@ import {
 // * Modules
 import { PermissionsHandler } from "@/system/handlers/permission";
 
-// * Typing
-import { types as filterTypes } from "@/system/factories/filter.f";
-
 export namespace types {
     export interface VerifyFunctions {
         /**
@@ -30,17 +27,6 @@ export namespace types {
             interaction: Interaction,
             emoji: string
         ) => Ok<boolean>;
-        /**
-         * Verify what kind of emoji is used.
-         * @param emoji Emoji to be verified.
-         * @example
-         * const emoji = "<:emoji:123456789>"
-         * const emojiFormat = verify.emojiFormat(emoji).val
-         *
-         * console.log(emojiFormat)
-         * // "custom"
-         */
-        emojiFormat: (emoji: string) => Ok<filterTypes.EmojiFormat>;
         /**
          * Verify if a message has a certain length.
          *
@@ -103,21 +89,6 @@ const Default: Factory<types.VerifyFunctions> = () => {
             if (searchEmoji) return Ok(true);
             else return Ok(false);
         },
-        emojiFormat: (emoji) => {
-            const emojiTest = /<:[a-zA-Z_]+:\d+>/.test(emoji);
-            const unicodeTestString =
-                "(\\u00a9|\\u00ae|[\\u2000-\\u3300]|" +
-                "\\ud83c[\\ud000-\\udfff]|" +
-                "\\ud83d[\\ud000-\\udfff]|" +
-                "\\ud83e[\\ud000-\\udfff])";
-            const emojiUnicodeTest = new RegExp(unicodeTestString, "g").test(
-                emoji
-            );
-
-            if (emojiUnicodeTest) return Ok("unicode");
-            else if (emojiTest) return Ok("custom");
-            else return Ok(false);
-        },
         messageLenght: async function (message, repeatFn?) {
             if (message.content.length > 200) {
                 if (repeatFn) {
@@ -130,8 +101,10 @@ const Default: Factory<types.VerifyFunctions> = () => {
             return Ok(message);
         },
         permissions: async (interaction) => {
-            const allowedIds = await new PermissionsHandler().AllowedRoles(
-                interaction.commandName
+
+            const allowedIds = await PermissionsHandler.AllowedRoles(
+                interaction.commandName,
+                interaction.guild?.id || "" //!DEV
             );
 
             if (typeof allowedIds.val === "boolean")

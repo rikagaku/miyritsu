@@ -1,5 +1,6 @@
 generator client {
-    provider = "prisma-client-js"
+    provider = "cargo run --bin prisma"
+    output = "../src/prisma.rs"
 }
 
 datasource db {
@@ -7,17 +8,47 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model AutoReportPresetInfo {
-    uuid             String  @id @default(uuid()) @map("_id")
-    name             String  @unique
-    chatID           String
-    logChatID        String
-    emoji            String
-    emojiID          String?
-    customEmoji      Boolean
-    reactNewMessages Boolean
+// # -------------------------------------------------- #
+//                  Guild/User
+model Guild {
+    id                  String           @id @map("_id")
+    name                String
+    cases               UserPunishment[] @relation
+    commandsPermissions CommandPermissions[] @relation
+}
 
-    info AutoReportPresetData? @relation
+model User {
+    id                  String  @id @map("_id")
+    isModerator         Boolean
+
+    appliedPunishments  UserPunishment[] @relation("AppliedPunishment")
+    sufferedPunishments UserPunishment[] @relation("SufferedPunishment")
+}
+
+// # -------------------------------------------------- #
+//                  Config
+model CommandPermissions {
+    commandName String  @id @map("_id")
+    allowed     String[] @default(["private"])
+    minViewer   String @default("private")
+
+    guildId     String
+    guild       Guild @relation(fields: [guildId], references: [id])
+}
+
+// # -------------------------------------------------- #
+//                  Autoreport
+model AutoReportPresetInfo {
+    uuid                String  @id @default(uuid()) @map("_id")
+    name                String  @unique
+    chatID              String
+    logChatID           String
+    emoji               String
+    emojiID             String?
+    customEmoji         Boolean
+    reactNewMessages    Boolean
+
+    info                AutoReportPresetData? @relation
 }
 
 model AutoReportPresetData {
@@ -25,23 +56,12 @@ model AutoReportPresetData {
     name            String   @unique
     alreadyReported String[]
 
-    infoUUID String                @unique
-    data     AutoReportPresetInfo? @relation(fields: [infoUUID], references: [uuid])
+    infoUUID        String                @unique
+    data            AutoReportPresetInfo? @relation(fields: [infoUUID], references: [uuid])
 }
 
-model Guild {
-    id    String           @id @map("_id")
-    cases UserPunishment[] @relation
-}
-
-model User {
-    id          String  @id @map("_id")
-    isModerator Boolean
-
-    appliedPunishments  UserPunishment[] @relation("AppliedPunishment")
-    sufferedPunishments UserPunishment[] @relation("SufferedPunishment")
-}
-
+// # -------------------------------------------------- #
+//                  Punishment
 enum PunishmentType {
     kick
     warn
@@ -54,19 +74,19 @@ enum PunishmentType {
 }
 
 model UserPunishment {
-    case      Int      @id @map("_id")
-    createdAt DateTime
-    expiresAt DateTime
-    reason    String
-    type      PunishmentType
-    undone    Boolean
+    case        Int      @id @map("_id")
+    createdAt   DateTime
+    expiresAt   DateTime
+    reason      String
+    type        PunishmentType
+    undone      Boolean
 
     moderatorId String @unique
     moderator   User   @relation("AppliedPunishment", fields: [moderatorId], references: [id])
 
-    userId String @unique
-    user   User   @relation("SufferedPunishment", fields: [userId], references: [id])
+    userId      String @unique
+    user        User   @relation("SufferedPunishment", fields: [userId], references: [id])
 
-    guildId String @unique
-    guild   Guild  @relation(fields: [guildId], references: [id])
+    guildId     String @unique
+    guild       Guild  @relation(fields: [guildId], references: [id])
 }

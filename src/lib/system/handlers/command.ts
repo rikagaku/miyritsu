@@ -11,6 +11,7 @@ import {
     RESTPostAPIChatInputApplicationCommandsJSONBody,
     Routes,
     SlashCommandBuilder,
+    SlashCommandOptionsOnlyBuilder,
 } from "discord.js";
 //#endregion
 //#region           Modules
@@ -23,7 +24,7 @@ export namespace types {
     export type CommandsSlashDataJSON =
         RESTPostAPIChatInputApplicationCommandsJSONBody;
 
-    export type CommandData<T = SlashCommandBuilder> = {
+    export type CommandData<T = SlashCommandOptionsOnlyBuilder> = {
         properties: {
             guild: boolean;
         };

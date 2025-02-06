@@ -3,14 +3,12 @@
  */
 
 //#region               External Libs
-import path from "path";
-import fsp from "fs/promises";
 import { Ok } from "ts-results";
 import { Collection } from "discord.js";
 //#endregion
 //#region               Modules
-import read from "@/system/factories/fs/read.f";
-import string from "@/system/factories/string.f";
+import { prisma } from "//index";
+import { action as autoReportAction } from "//commands/mod/autoreport";
 //#endregion
 //#region               Typing
 export namespace types {
@@ -31,14 +29,6 @@ export namespace types {
           };
 }
 //#endregion
-
-//#region               Variables
-export const basePresetDir = path.join(
-    __dirname,
-    "../../../../../config/presets/info"
-);
-const baseCommandsDir = path.join(__dirname, "../../../../src/commands");
-//#endregion
 //#region               Implementation
 /**
  * Manipulador de Presets.
@@ -46,30 +36,19 @@ const baseCommandsDir = path.join(__dirname, "../../../../src/commands");
 export class PresetHandler {
     // Utilitários Externos
     public static async InitializateAll(): Promise<Ok<void>> {
-        const presetDirFiles = await fsp.readdir(basePresetDir);
+        // Inicializate Autoreport
+        {
+            const presets = await prisma.autoReportPresetInfo.findMany();
 
-        for (const presetFile of presetDirFiles) {
-            const commandName = string.extractFilename(presetFile).val;
-
-            const loadPreset = await read.JSON<types.PresetsObject>(
-                path.resolve(basePresetDir, presetFile)
-            );
-
-            for (const key in loadPreset.val) {
-                const preset = loadPreset.val[key];
-                const command = await import(
-                    (
-                        await read.findFilePath(
-                            baseCommandsDir,
-                            `${commandName}.js`,
-                            {
-                                recursive: true,
-                            }
-                        )
-                    ).val
-                );
-
-                await command.action({ name: preset.name, ...preset.data });
+            for (const preset of presets) {
+                await autoReportAction({
+                    name: preset.name,
+                    chatID: preset.chatID,
+                    logChatID: preset.logChatID,
+                    emoji: preset.emoji,
+                    emojiID: preset.emojiID ? preset.emojiID : undefined,
+                    customEmoji: preset.customEmoji,
+                });
             }
         }
 

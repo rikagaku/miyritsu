@@ -5,7 +5,7 @@ import {
     EmbedBuilder,
     Message,
     MessageReaction,
-    TextBasedChannel,
+    TextChannel,
     User,
 } from "discord.js";
 import { Ok } from "ts-results";
@@ -18,7 +18,6 @@ import { EmbedMessagesHandler } from "@/external/handlers/embed";
 import { BotErr, ErrorOrigin, ErrorKind } from "@/system/handlers/errHandlers";
 //#endregion
 //#region           Types
-import { types as reactTypes } from "@/external/factories/react.f";
 import { types as embedTypes } from "@/external/handlers/embed";
 import { types as autoReportTypes } from ">/mod/autoreport";
 import { prisma } from "//index";
@@ -26,7 +25,7 @@ export namespace types {
     export type PresetedFuns = {
         embed: {
             sendReportMessage: (params: {
-                logChat: TextBasedChannel;
+                logChat: TextChannel;
                 interaction: MessageReaction;
                 user: User;
                 reason: embedTypes.ReportReason | false;
@@ -98,8 +97,6 @@ const Default: Factory<types.PresetedFuns> = () => {
 
                 const getEmbed = await EmbedHandler.Mount(embedParams);
                 const embed = getEmbed.unwrap().data;
-
-                console.log(embed);
 
                 if (description === reportedMessage.content) {
                     delete embed.title;

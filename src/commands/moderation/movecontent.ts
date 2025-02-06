@@ -17,6 +17,7 @@ import {
     PermissionFlagsBits,
     SlashCommandBuilder,
     ChatInputCommandInteraction,
+    SlashCommandOptionsOnlyBuilder,
 } from "discord.js";
 //#endregion
 //#region           Modules
@@ -106,7 +107,7 @@ export namespace types {
     ) => Promise<Ok<void>>;
     export type data = () => Ok<
         commandTypes.CommandData<
-            Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">
+            Omit<SlashCommandOptionsOnlyBuilder, "addSubcommand" | "addSubcommandGroup">
         >
     >;
     export type execute = (

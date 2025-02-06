@@ -12,6 +12,7 @@ import {
     ChannelType,
     ChatInputCommandInteraction,
     ColorResolvable,
+    PartialGroupDMChannel,
     Snowflake,
     StringSelectMenuBuilder,
     StringSelectMenuInteraction,
@@ -198,6 +199,12 @@ export class PresetDialogHandler {
                         origin: ErrorOrigin.User,
                         kind: ErrorKind.TypeError,
                     });
+                } else if (this.interaction.channel instanceof PartialGroupDMChannel) {
+                    throw new BotErr({
+                        message: "You can't use it with a channel of GroupDMChannel class!",
+                        origin: ErrorOrigin.User,
+                        kind: ErrorKind.TypeError,
+                    });
                 }
 
                 const verifyPresetExistence = async (
@@ -308,6 +315,12 @@ export class PresetDialogHandler {
                     if (interaction.channel === null) {
                         throw new BotErr({
                             message: "This interaction doesn't have a channel!",
+                            origin: ErrorOrigin.User,
+                            kind: ErrorKind.TypeError,
+                        });
+                    } else if (interaction.channel instanceof PartialGroupDMChannel) {
+                        throw new BotErr({
+                            message: "You can't use it with a channel of GroupDMChannel class!",
                             origin: ErrorOrigin.User,
                             kind: ErrorKind.TypeError,
                         });

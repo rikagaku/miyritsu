@@ -10,6 +10,7 @@ import {
     Message,
     MessageReaction,
     SlashCommandBuilder,
+    SlashCommandSubcommandsOnlyBuilder,
     Snowflake,
     TextBasedChannel,
     TextChannel,
@@ -30,13 +31,13 @@ import {
     BotErr,
     ErrorKind,
     ErrorOrigin,
+    Result,
 } from "@/system/handlers/errHandlers";
 import { Log } from "@/system/handlers/log";
 import { client, prisma } from "//index";
 import { ListenerHandler } from "@/system/handlers/listener";
 //#endregion
 //#region           Typing
-import { types as reactTypes } from "@/external/factories/react.f";
 import { types as commandTypes } from "@/system/handlers/command";
 export namespace types {
     export type PresetParams = {
@@ -98,7 +99,9 @@ export namespace types {
         message: Message,
         emoji: GuildEmoji | string
     ) => Ok<void>;
-    export type data = () => Ok<commandTypes.CommandData<SlashCommandBuilder>>;
+    export type data = () => Ok<
+        commandTypes.CommandData<SlashCommandSubcommandsOnlyBuilder>
+    >;
     export type actionFunction = (
         params: types.ReceivedStoredParams
     ) => Promise<Ok<AnyFunction>>;
@@ -107,7 +110,7 @@ export namespace types {
     ) => Promise<Ok<void>>;
     export type autocomplete = (
         interaction: AutocompleteInteraction
-    ) => Promise<Ok<void>>;
+    ) => Promise<Result<void>>;
 }
 //#endregion
 //#region           Variables
@@ -283,7 +286,7 @@ export const action: types.actionFunction = async (params) => {
             "Na requisição de verificação, o emoji existia, porém não mais!";
         const wrongTypeErr = "Você precisa entregar um canal de texto!";
 
-        var chat: TextBasedChannel;
+        var chat: TextChannel;
 
         const getChat = await client.channels.fetch(params.chatID);
         {
@@ -293,8 +296,7 @@ export const action: types.actionFunction = async (params) => {
                     origin: ErrorOrigin.External,
                     kind: ErrorKind.NotFound,
                 });
-            }
-            if (getChat.isTextBased()) {
+            } else if (getChat instanceof TextChannel) {
                 chat = getChat;
             } else {
                 throw new BotErr({
@@ -305,7 +307,7 @@ export const action: types.actionFunction = async (params) => {
             }
         }
 
-        var logChat: TextBasedChannel;
+        var logChat: TextChannel;
         const getLogChat = await client.channels.fetch(params.logChatID);
         {
             if (!getLogChat) {
@@ -314,8 +316,7 @@ export const action: types.actionFunction = async (params) => {
                     origin: ErrorOrigin.External,
                     kind: ErrorKind.NotFound,
                 });
-            }
-            if (getLogChat.isTextBased()) {
+            } else if (getLogChat instanceof TextChannel) {
                 logChat = getLogChat;
             } else {
                 throw new BotErr({
@@ -355,10 +356,12 @@ export const action: types.actionFunction = async (params) => {
         reaction: MessageReaction,
         user: User
     ): Promise<Ok<void>> => {
-        if (reaction.message.channel.id !== params.chatID) {
-            return Ok.EMPTY;
-        }
-        if (user.bot) {
+        if (
+            reaction.message.channel.id !== params.chatID ||
+            user.bot ||
+            (reaction.emoji.id !== params.emojiID &&
+                reaction.emoji.name !== params.emoji)
+            ) {
             return Ok.EMPTY;
         }
 
@@ -396,7 +399,7 @@ export const action: types.actionFunction = async (params) => {
             await prisma.autoReportPresetData.update({
                 where: { name: params.name },
                 data: {
-                    alreadyReported: dataTable.alreadyReported
+                    alreadyReported: dataTable.alreadyReported,
                 },
             });
         }
@@ -824,6 +827,14 @@ export const autocomplete: types.autocomplete = async (interaction) => {
                     .map((value) => ({ value: value.name, name: value.name }))
             );
         }
+    } else {
+        return new BotErr({
+            message:
+                "You're enabling autocomplete for a subcommand " +
+                "that doesn't implement it!",
+            origin: ErrorOrigin.Internal,
+            kind: ErrorKind.Other,
+        });
     }
 
     return Ok.EMPTY;

@@ -38,6 +38,45 @@
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"
             ]
+        },
+        {
+            "name": "Test (Rust)",
+            "type": "lldb",
+            "request": "launch",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run"
+                ]
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}",
+        },
+        {
+            "name": "Run (Rust)",
+            "type": "lldb",
+            "request": "launch",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=ifhany",
+                    "--package=ifhany"
+                ],
+                "filter": {
+                    "name": "ifhany",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}",
+        },
+        {
+            "name": "Attach (Rust)",
+            "type": "lldb",
+            "request": "attach",
+            "pid": "${command:pickMyProcess}",
+            "program": "${workspaceFolder}/target/debug/ifhany",
+            "sourceLanguages": ["rust"]
         }
     ]
 }

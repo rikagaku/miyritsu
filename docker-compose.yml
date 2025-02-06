@@ -17,7 +17,7 @@ services:
             - 27017:27017
     app:
         build: .
-        user: root
+        user: ifhany
         container_name: ifhany_app
         ports:
             - 2129:2129
@@ -27,5 +27,11 @@ services:
             - ifhany_net
         depends_on:
             - database
+
+        # Please, these values are only for development. Don't be an idiot.
+        cap_add:
+            - SYS_PTRACE
+        security_opt:
+            - seccomp=unconfined
 volumes:
     ifhany_vol:

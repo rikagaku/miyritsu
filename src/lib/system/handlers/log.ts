@@ -192,8 +192,6 @@ export class Log {
                     if (this._write_in_log) {
                         await this.Utils().printInGeneralLog(firstMessage);
                         await this.Utils().printInGeneralLog(secondMessage);
-
-                        return Ok.EMPTY;
                     }
 
                     console.log(firstMessage);
@@ -209,8 +207,6 @@ export class Log {
 
                     if (this._write_in_log) {
                         await this.Utils().printInGeneralLog(message);
-
-                        return Ok.EMPTY;
                     }
 
                     console.log(message);
@@ -226,8 +222,6 @@ export class Log {
 
             if (this._write_in_log) {
                 await this.Utils().printInGeneralLog(message);
-
-                return Ok.EMPTY;
             }
 
             console.log(message);

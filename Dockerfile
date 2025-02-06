@@ -15,31 +15,19 @@ RUN pacman-key --init \
     && sed -i "s/^ParallelDownloads.*/ParallelDownloads = ${PACMAN_PARALLELDOWNLOADS}/g" /etc/pacman.conf
 
 # Install basic tools
-RUN pacman -Syu --noconfirm base base-devel git sudo go wget
+RUN pacman -Syu --noconfirm base base-devel git sudo go wget lldb
 
 # ---------- ifhany ---------- #
 USER ifhany
 
-# Install Yay
-WORKDIR /home/ifhany
-RUN git clone https://aur.archlinux.org/yay.git
-WORKDIR /home/ifhany/yay
-RUN makepkg --noconfirm
+# Install Rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
-# ---------- Root ---------- #
-USER root
+ENV PATH="$PATH:/home/ifhany/.cargo/bin"
 
-RUN pacman -U --noconfirm /home/ifhany/yay/*.pkg.tar.zst
-RUN yay -Syyuu --noconfirm
-
-RUN yay -S npm --noconfirm
-RUN yay -S yarn --noconfirm
+RUN rustup default stable
 
 ENV TERM=xterm
 ENV FORCE_COLOR=true
-
-# ---------- ifhany ---------- #
-USER ifhany
-
 
 WORKDIR /app

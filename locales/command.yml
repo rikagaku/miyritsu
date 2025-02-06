@@ -1,0 +1,33 @@
+# Creating a new command:
+#
+# command.<name>.name:
+#     en: "<name>"
+# command.<name>.description:
+#     en: "<description>"
+# command.<name>.<param_name>.name:
+#     en: "<param_name>"
+# command.<name>.<param_name>.description:
+#     en: "<description>"
+# --------------------------------------------------
+
+command.general.ephemeral_description:
+    en: "Do you want to hide this message?"
+
+
+
+command.kick.name:
+    en: "kick"
+    pt-BR: "remover"
+command.kick.description:
+    en: "Kick a user and specify a reason!"
+    pt-BR: "Remova um usuário e especifique um motivo!"
+command.kick.user.name:
+    en: "user"
+    pt-BR: "usuário"
+command.kick.user.description:
+    en: "Who do you want to kick?"
+command.kick.reason.name:
+    en: "reason"
+    pt-BR: "motivo"
+command.kick.reason.description:
+    en: "What is the reason?"

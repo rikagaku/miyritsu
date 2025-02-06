@@ -75,7 +75,6 @@ export const data: types.data = async () => {
                     .setDescription(description.ephemeral)
                     .setRequired(false)
             )
-            .setDMPermission(false),
     });
 };
 export const action: types.action = async (
