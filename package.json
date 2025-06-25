@@ -1,5 +1,5 @@
 {
-    "name": "ifhany",
+    "name": "miyritsu",
     "version": "1.0.0",
     "author": "Dev Myna <var.devmyna@gmail.com> (https://devmyna.xyz)",
     "main": "./dist/src/index.js",
@@ -18,7 +18,7 @@
     },
     "scripts": {
         "start": "clear; node .",
-        "dev": "docker rm ifhany_db; docker-compose -f docker-compose.yml -f config/docker-compose_dev.yml up --build --remove-orphans ",
+        "dev": "docker rm miyritsu_db; docker-compose -f docker-compose.yml -f config/docker-compose_dev.yml up --build --remove-orphans ",
         "test": "docker-compose run --entrypoint './scripts/on-container_test.bash' app",
         "devenv": "./scripts/dev-init --no-clean",
         "dev-cached": "./scripts/dev-init --no-build",

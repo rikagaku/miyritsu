@@ -11,7 +11,7 @@ rustup default stable
 
 #cargo build
 
-#lldb-server g 0.0.0.0:2129 -- /app/target/debug/ifhany
+#lldb-server g 0.0.0.0:2129 -- /app/target/debug/miyritsu
 
 while true; do
     sleep 5;

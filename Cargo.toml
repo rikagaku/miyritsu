@@ -1,8 +1,8 @@
 [package]
-name = "ifhany"
+name = "miyritsu"
 version = "2.0.0"
 edition = "2021"
-default-run = "ifhany"
+default-run = "miyritsu"
 
 [dependencies]
 serde = "1.0.215"

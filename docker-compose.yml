@@ -1,30 +1,30 @@
 networks:
-    ifhany_net:
+    miyritsu_net:
         driver: bridge
 services:
     database:
         build: ./config
         networks:
-            - ifhany_net
-        container_name: ifhany_db
+            - miyritsu_net
+        container_name: miyritsu_db
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
-            MONGO_INITDB_ROOT_PASSWORD: ifhany
-            MONGO_INITDB_DATABASE: ifhany_db
-            MONGO_REPLICA_HOST: ifhany_db
+            MONGO_INITDB_ROOT_PASSWORD: miyritsu
+            MONGO_INITDB_DATABASE: miyritsu_db
+            MONGO_REPLICA_HOST: miyritsu_db
             MONGO_REPLICA_PORT: 27017
         ports:
             - 27017:27017
     app:
         build: .
-        user: ifhany
-        container_name: ifhany_app
+        user: miyritsu
+        container_name: miyritsu_app
         ports:
             - 2129:2129
         volumes:
             - .:/app
         networks:
-            - ifhany_net
+            - miyritsu_net
         depends_on:
             - database
 
@@ -34,4 +34,4 @@ services:
         security_opt:
             - seccomp=unconfined
 volumes:
-    ifhany_vol:
+    miyritsu_vol:

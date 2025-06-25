@@ -1520,7 +1520,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "ifhany"
+name = "miyritsu"
 version = "2.0.0"
 dependencies = [
  "chrono",

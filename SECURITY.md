@@ -12,4 +12,4 @@ currently being supported with security updates.
 
 ## Reporting a Vulnerability
 
-If you see any bugs, vulnerabilities or unexpected behavior, you can [open a bug issue](https://github.com/Fhany-Server/ifhany/issues/new?assignees=&labels=bug&projects=&template=bug_report.md&title=fix%3A+wrong+behavior+in+something) as it makes our job a lot easier!
+If you see any bugs, vulnerabilities or unexpected behavior, you can [open a bug issue](https://github.com/rikagaku/miyritsu/issues/new?assignees=&labels=bug&projects=&template=bug_report.md&title=fix%3A+wrong+behavior+in+something) as it makes our job a lot easier!

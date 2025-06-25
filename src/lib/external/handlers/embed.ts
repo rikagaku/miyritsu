@@ -273,15 +273,15 @@ export class EmbedMessagesHandler {
      * @example
      * // old description:
      * // "Hi!"
-     * // "I'm iFhany and I..."
+     * // "My name is Miyritsu and I..."
      * // "Like my dev!"
-     * await new EmbedHandler("iFhany.presentation").Data().UpdateDescLine({
+     * await new EmbedHandler("miyritsu.presentation").Data().UpdateDescLine({
      *     line: 2,
      *     content: "am a bot!",
      * });
      * // new description:
      * // "Hi!"
-     * // "I'm iFhany and I..."
+     * // "My name is Miyritsu and I..."
      * // "am a bot!"
      */
     public async UpdateDescLine(

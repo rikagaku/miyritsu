@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker rm ifhany_db; docker compose -f docker-compose.yml -f config/docker-compose_dev.yml up -d
+docker rm miyritsu_db; docker compose -f docker-compose.yml -f config/docker-compose_dev.yml up -d
 
 echo "Starting dev mode";
 
@@ -11,11 +11,11 @@ while [ $STARTED = false ]; do
 
     echo "Waiting for dev mode to start... ($TRIES)";
 
-    if docker ps | grep -q ifhany_app; then
+    if docker ps | grep -q miyritsu_app; then
         STARTED=true;
     fi
 
     TRIES=$((TRIES + 1))
 done
 
-dockersh ifhany_app
+dockersh miyritsu_app
